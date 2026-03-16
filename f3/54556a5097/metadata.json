@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.4.9",
+  "checkpoint_id": "f354556a5097",
+  "strategy": "manual-commit",
+  "branch": "marc/clickhouse-cost-protection",
+  "checkpoints_count": 3,
+  "files_touched": [
+    "apps/api/src/__tests__/rate-limit.test.ts",
+    "apps/api/src/middleware.ts",
+    "apps/api/src/rate-limit.ts",
+    "packages/api-routes/src/__tests__/analytics-schema.test.ts",
+    "packages/api-routes/src/schemas/analytics.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/f3/54556a5097/0/metadata.json",
+      "transcript": "/f3/54556a5097/0/full.jsonl",
+      "context": "/f3/54556a5097/0/context.md",
+      "content_hash": "/f3/54556a5097/0/content_hash.txt",
+      "prompt": "/f3/54556a5097/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 83,
+    "cache_creation_tokens": 160833,
+    "cache_read_tokens": 1666618,
+    "output_tokens": 9553,
+    "api_call_count": 33
+  }
+}

@@ -1,0 +1,111 @@
+<system_instruction>
+You are working inside Conductor, a Mac app that lets the user run many coding agents in parallel.
+Your work should take place in the /Users/marc/conductor/workspaces/rudel/kyoto directory (unless otherwise directed), which has been set up for you to work in.
+Each workspace has a .context directory (gitignored) where you can save files to collaborate with other agents.
+The target branch for this workspace is main. Use this for actions like creating new PRs, bisecting, etc., unless you're told otherwise.
+
+If the user asks you to work on several unrelated tasks in parallel, you can suggest they start new workspaces.
+If the user asks for help with Conductor, ask them to email [humans@conductor.build](mailto:humans@conductor.build) or
+click on the comment icon in the bottom left to send feedback.
+</system_instruction>
+
+
+<system-instruction>
+To do immediately, before using any skills or any other tools:
+
+Rename the branch using `git branch -m`. Do not check the current branch name.
+
+Only do this once per session. If the branch has already been renamed, leave it.
+
+Choosing a branch name: use concrete, specific language, avoid abstract nouns, and be concise (<30 characters). Use the prefix "marc/" before the name.
+
+</system-instruction>
+
+
+<system_instruction>
+The user has attached these files. Read them before proceeding.
+- /tmp/attachments/[LINEAR]-NUM-6710.md (1.7 KB)
+</system_instruction>
+
+
+
+I think rate limits and client timeouts for the Clickhouse instance should be sufficient. And in order to make this more problematic, a client needs to upload A LOT of sessions. which would be good for us. So i think we might be "protected" enough. Whats your realistic take?
+
+---
+
+okay add a day cap + 1k limit in zod.
+and rate limit but with 90/min to be a little bit more generous
+
+---
+
+do we have test cases or type checks, that guarantee, that this will not break anything?
+
+---
+
+and the frontend <> backend integration is also typesafe? and we dont do any weird casting to have different runtime than build time types?
+
+---
+
+<system_instruction>
+The user has attached these files. Read them before proceeding.
+- /Users/marc/conductor/workspaces/rudel/kyoto/.context/attachments/PR instructions.md (955 B)
+</system_instruction>
+
+
+
+Create a PR
+
+---
+
+Base directory for this skill: /Users/marc/conductor/workspaces/rudel/kyoto/.claude/skills/pr-creation
+
+# PR Creation Checklist
+
+Follow these steps in order when creating a pull request. Do not skip any step.
+
+## 1. Run Verification
+
+```bash
+bun run verify
+```
+
+This runs type checking, linting, and tests across the monorepo.
+
+**Do NOT proceed if verification fails.** Fix issues first, then re-run.
+
+## 2. Review the Workspace Diff
+
+Use `mcp__conductor__GetWorkspaceDiff` with `stat: true` to see all changed files, then review the full diff to understand the scope of changes.
+
+## 3. Commit All Changes
+
+Stage and commit all changes. Follow any user instructions about commit message style.
+
+## 4. Push and Create PR
+
+1. Push to origin with `-u` flag if the branch has no upstream
+2. PR title **must** use conventional commit format (enforced by CI):
+   `feat:` | `fix:` | `docs:` | `style:` | `refactor:` | `perf:` | `test:` | `build:` | `ci:` | `chore:` | `revert:`
+3. Use `gh pr create --base main` with:
+   - Title under 80 characters
+   - Description covering ALL changes in the workspace diff (not just the latest commit)
+   - Keep description concise
+
+```bash
+gh pr create --base main --title "title here" --body "$(cat <<'EOF'
+## Summary
+- bullet points describing changes
+
+## Test plan
+- [ ] testing steps
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+EOF
+)"
+```
+
+## Common Mistakes to Avoid
+
+- **Skipping verification**: Step 1 is non-negotiable. CI will catch the same failures but slower.
+- **Wrong PR title format**: Must be conventional commit format or CI will reject it.
+- **Describing only the latest commit**: The PR description should cover the entire branch diff.
